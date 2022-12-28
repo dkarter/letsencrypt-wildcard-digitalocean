@@ -1,26 +1,25 @@
-Docker Wildcard Certbot
-=================
+# Docker Wildcard Certbot
 
 Get Let's Encrypt wildcard SSL certificates validated by DNS challenges.
 
 **NOTE**
 
-This project currently only support Cloudflare DNS challenges.
+This project only supports DigitalOcean DNS challenges.
 
-Usage
------------
+It was forked from https://github.com/single9/docker-wildcard-letsencrypt
 
-    docker pull single9/wildcard-letsencrypt
+## Usage
+
+    docker pull dkarter/letsencrypt-wildcard-digitalocean
 
     docker run -it --rm \
         -v "$DIR/ssl:/etc/letsencrypt" \
         -e DOMAIN_NAME=<Your Domain Name> \
         -e CERTBOT_EMAIL=<Your email for certbot> \
-        -e CLOUDFLARE_EMAIL=<Your cloudflare email> \
-        -e CLOUDFLARE_API_KEY=<Your cloudflare api key> \
+        -e DIGITALOCEAN_TOKEN=<digital ocean api token> \
         -e SLACK_WEBHOOK=https://hooks.slack.com/services/XXXXXX/XXXXXX/XXXXXXXXXXXXXX \
         -e SLACK_WEBHOOK_CHANNEL=<SLACK_CHANNEL> \
-        single9/wildcard-letsencrypt
+        dkarter/letsencrypt-wildcard-digitalocean
 
 Example
 
@@ -28,31 +27,17 @@ Example
         -v "$DIR/ssl:/etc/letsencrypt" \
         -e DOMAIN_NAME=example.com \
         -e CERTBOT_EMAIL=duye@example.com \
-        -e CLOUDFLARE_EMAIL=duye@example.com \
-        -e CLOUDFLARE_API_KEY=<API_KEY> \
-        single9/wildcard-letsencrypt
+        -e DIGITALOCEAN_TOKEN=doc_xxxx \
+        dkarter/letsencrypt-wildcard-digitalocean
 
 ### Reload NGINX Container
 
-If you want reload NGINX container after certbot is finished, add the environment variable `NGINX_CONTAINER_NAME`.
+If you want to reload the Nginx container after Certbot is finished,
+add the environment variable `NGINX_CONTAINER_NAME`.
 
     docker run -it --rm \
         -v "$DIR/ssl:/etc/letsencrypt" \
         -v /var/run/docker.sock:/var/run/docker.sock
-        -e NGINX_CONTAINER_NAME=<Container Name> \
         -e DOMAIN_NAME=<Your Domain Name> \
-        -e CERTBOT_EMAIL=<Your email for certbot> \
-        -e CLOUDFLARE_EMAIL=<Your cloudflare email> \
-        -e CLOUDFLARE_API_KEY=<Your cloudflare api key> \
-        single9/wildcard-letsencrypt
-
-### Staging
-
-    docker run -it --rm \
-        -v "$DIR/ssl:/etc/letsencrypt" \
-        -e MODE=staging \
-        -e DOMAIN_NAME=<Your Domain Name> \
-        -e CERTBOT_EMAIL=<Your email for certbot> \
-        -e CLOUDFLARE_EMAIL=<Your cloudflare email> \
-        -e CLOUDFLARE_API_KEY=<Your cloudflare api key> \
-        single9/wildcard-letsencrypt
+        -e DIGITALOCEAN_TOKEN=<digital ocean api token> \
+        dkarter/letsencrypt-wildcard-digitalocean
